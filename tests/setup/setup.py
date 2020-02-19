@@ -9,15 +9,17 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-from utils.log_stream import LogStream
-from utils.test_collector import TestCollector
+from setup.log_stream import LogStream
+from setup.test_collector import TestCollector
+
+from utils.global_holder import GlobalHolder
 
 def run():
   sys.path.insert(0, os.getcwd())
   locale.setlocale(locale.LC_ALL, '')
 
   # ログファイル生成
-  logfile_name = r'.\\output\\results\\result_{0}.txt' if 'windows' in platform.system() else './output/results/result_{0}.txt'
+  logfile_name = '.\\output\\results\\result_{0}.txt' if 'windows' in platform.system() else './output/results/result_{0}.txt'
   logfile = LogStream(
     logfile_name.format(datetime.datetime.now().strftime('%Y%m%d_%H%M_%S')))
 
@@ -27,6 +29,8 @@ def run():
     browser = webdriver.Remote(
       command_executor='http://selenium-hub:4444/wd/hub',
       desired_capabilities=DesiredCapabilities.CHROME)
+
+    GlobalHolder.Browser = browser
 
     # 最大化
     browser.maximize_window()

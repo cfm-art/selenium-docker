@@ -2,5 +2,5 @@ __pycache__/
 .DS_Store
 ^~*
 *~$
-output/captures/*.png
-output/results/*.txt
+tests/output/captures/**/*.png
+tests/output/results/*.txt
