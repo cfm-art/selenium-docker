@@ -17,3 +17,9 @@ MIT
 print等の出力は `tests/output` 以下に生成されます。
 
 TODO: デバッガは要検討。
+
+## 出典
+https://github.com/sikkimtemi/selenium
+をベースに作成しております。
+
+ライセンスが明記されていないので、ひとまず出典として明記しておきます。
