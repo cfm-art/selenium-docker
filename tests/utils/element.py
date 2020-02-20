@@ -39,16 +39,16 @@ class Element(object):
 
     def click(self):
         """ クリック """
-        self.foreach(lambda x: x.click())
+        self.foreach(lambda x: x.__first().click())
 
     # -- value --
     def set_value(self, value: str):
         """ 値を設定 """
-        self.foreach(lambda x: ElementAccessor.set(x, value))
+        self.foreach(lambda x: ElementAccessor.set(x.__first(), value))
 
     def set_file(self, path: str):
         """ ファイルを設定 """
-        self.foreach(lambda x: ElementAccessor.set_file(x, path))
+        self.foreach(lambda x: ElementAccessor.set_file(x.__first(), path))
 
     def get_value(self) -> str:
         """ 値を取得 """
@@ -65,7 +65,8 @@ class Element(object):
         return map(lambda x: ElementAccessor.inner_text(x), self.__elements)
 
     def set_text(self, text: str):
-        self.foreach(lambda x: ElementAccessor.set_inner_text(x, text))
+        setter = ElementAccessor.set_inner_text
+        self.foreach(lambda x: setter(x.__first(), text))
 
     def get_html(self) -> str:
         return ElementAccessor.inner_html(self.__first())
@@ -74,7 +75,8 @@ class Element(object):
         return map(lambda x: ElementAccessor.inner_html(x), self.__elements)
 
     def set_html(self, html: str):
-        self.foreach(lambda x: ElementAccessor.set_inner_html(x, html))
+        setter = ElementAccessor.set_inner_html
+        self.foreach(lambda x: setter(x.__first(), html))
 
     def get_attribute(self, name: str) -> str:
         """ タグの属性を取得 """
@@ -87,11 +89,11 @@ class Element(object):
     # -- radio / checkbox --
     def check(self):
         """ チェックボックスやラジオのチェックをつける """
-        self.foreach(lambda x: ElementAccessor.check(x))
+        self.foreach(lambda x: ElementAccessor.check(x.__first()))
 
     def uncheck(self):
         """ チェックボックスやラジオのチェックを外す """
-        self.foreach(lambda x: ElementAccessor.uncheck(x))
+        self.foreach(lambda x: ElementAccessor.uncheck(x.__first()))
 
     def is_checked(self) -> bool:
         """ チェックボックスやラジオがチェック中か判定 """
