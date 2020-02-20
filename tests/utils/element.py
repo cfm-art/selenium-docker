@@ -28,7 +28,14 @@ class Element(object):
 
     def __init__(self, element: Union[WebElement, List[WebElement]]):
         """ 要素を指定して初期化 """
-        self.__elements = element if isinstance(element, list) else [element]
+        if isinstance(element, list):
+            self.__elements = element
+        elif isinstance(element, Element):
+            self.__elements = element.__elements
+        elif isinstance(element, WebElement):
+            self.__elements = [element]
+        else:
+            self.__elements = element.__element
 
     def click(self):
         """ クリック """
@@ -63,7 +70,7 @@ class Element(object):
     def get_html(self) -> str:
         return ElementAccessor.inner_html(self.__first())
 
-    def get_htmls(self) -> str:
+    def get_htmls(self) -> [str]:
         return map(lambda x: ElementAccessor.inner_html(x), self.__elements)
 
     def set_html(self, html: str):
@@ -79,7 +86,7 @@ class Element(object):
 
     # -- radio / checkbox --
     def check(self):
-        """ チェックボックスやラジオのチェックを外す """
+        """ チェックボックスやラジオのチェックをつける """
         self.foreach(lambda x: ElementAccessor.check(x))
 
     def uncheck(self):
@@ -143,7 +150,7 @@ class Element(object):
         for e in self.__elements:
             func(Element(e))
 
-    def filter(self, func: Callable[['Element'], bool]):
+    def filter(self, func: Callable[['Element'], bool]) -> [WebElement]:
         """ フィルター """
         filtered = filter(func, map(lambda x: Element(x), self.__elements))
         return map(lambda x: x.__first(), filtered)

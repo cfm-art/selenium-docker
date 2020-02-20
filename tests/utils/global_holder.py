@@ -1,3 +1,4 @@
+import datetime
 from selenium.webdriver.remote.webdriver import WebDriver
 
 
@@ -6,12 +7,9 @@ class GlobalHolder():
 
     # WebDriver
     Browser: WebDriver = None
-    # @staticmethod
-    # @property
-    # def Browser() -> WebDriver:
-    #     return GlobalHolder._Browser
 
-    # @staticmethod
-    # @Browser.setter
-    # def Browser(browser: WebDriver):
-    #     GlobalHolder._Browser = browser
+    # 起動日時
+    LunchTime: datetime.datetime = None
+
+    # 連番
+    ScreenShotNo: int = 1

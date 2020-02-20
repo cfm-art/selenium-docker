@@ -20,11 +20,14 @@ def run():
     locale.setlocale(locale.LC_ALL, '')
 
     # ログファイル生成
-    logfile_name = '.\\output\\results\\result_{0}.txt' \
+    logfile_name = '.\\output\\results\\{1}\\result_{0}.txt' \
         if 'windows' in platform.system() \
-        else './output/results/result_{0}.txt'
+        else './output/results/{1}/result_{0}.txt'
+    now = datetime.datetime.now()
+    GlobalHolder.LunchTime = now
     logfile = LogStream(logfile_name.format(
-        datetime.datetime.now().strftime('%Y%m%d_%H%M_%S')))
+        now.strftime('%Y%m%d_%H%M_%S'),
+        now.strftime('%Y%m%d')))
 
     browser = None
     try:

@@ -3,6 +3,8 @@
 """ 結果用 """
 
 from io import IOBase
+import os
+from pathlib import Path
 import sys
 
 
@@ -15,6 +17,8 @@ class LogStream(IOBase):
 
     def __init__(self, name: str):
         try:
+            path = Path(name)
+            os.makedirs(path.parent, exist_ok=True)
             self.file_ = open(name, "w+", encoding='utf-8')
         except Exception as e:
             message = (

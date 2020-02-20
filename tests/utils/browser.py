@@ -1,6 +1,5 @@
 # coding: utf-8
 
-import datetime
 import os
 import platform
 from pathlib import Path
@@ -15,12 +14,32 @@ class Browser(object):
         return Element.document()
 
     def screen_shot(self, filename: str):
-        now = datetime.datetime.now().strftime('%Y%m%d_%H%M_%S')
-        if 'windows' in platform.system():
-            image_path = '.\\output\\captures\\{0}\\{1}' \
-                .format(now, filename.replace('/', '\\'))
+        import traceback
+        output = 'スクリーンショット'
+        for tb in traceback.extract_stack(None, None):
+            if tb[2].startswith('test'):
+                output = tb[2]
+
+        no = '{0:04d}'.format(GlobalHolder.ScreenShotNo)
+        GlobalHolder.ScreenShotNo += 1
+        if filename is None or filename == '':
+            output = output + '_' + no
         else:
-            image_path = './output/captures/{0}/{1}'.format(now, filename)
+            output = output + '_' + filename + '_' + no
+
+        now = GlobalHolder.LunchTime
+        if 'windows' in platform.system():
+            image_path = '.\\output\\captures\\{2}\\{0}\\{1}.png' \
+                .format(
+                    now.strftime('%Y%m%d_%H%M_%S'),
+                    output.replace('/', '\\'),
+                    now.strftime('%Y%m%d'))
+        else:
+            image_path = './output/captures/{2}/{0}/{1}.png' \
+                .format(
+                    now.strftime('%Y%m%d_%H%M_%S'),
+                    output.replace('/', '\\'),
+                    now.strftime('%Y%m%d'))
 
         path = Path(image_path)
         os.makedirs(path.parent, exist_ok=True)
