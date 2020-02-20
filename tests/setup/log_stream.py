@@ -3,8 +3,8 @@
 """ 結果用 """
 
 from io import IOBase
-import os
 import sys
+
 
 class LogStream(IOBase):
     """ テスト結果をファイルとコンソールの両方に出す """

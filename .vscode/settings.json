@@ -1,6 +1,8 @@
 // 既定の設定とユーザー設定を上書きするには、このファイル内に設定を挿入します
 {
     "files.encoding": "utf8",
-    "editor.tabSize": 2,
+    "editor.tabSize": 4,
     "python.pythonPath": "python3",
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false
 }

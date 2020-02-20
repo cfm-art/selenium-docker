@@ -10,7 +10,7 @@ services:
     ports:
       - 4444:4444
 
-  # chrome headless
+  # -- browsers --
   chrome:
     image: selenium/node-chrome-debug
     container_name: 'chrome'
@@ -29,19 +29,26 @@ services:
       - HUB_PORT_4444_TCP_ADDR=selenium-hub
       - HUB_PORT_4444_TCP_PORT=4444
 
-  #firefox:
-  #  image: selenium/node-firefox-debug
-  #  container_name: 'firefox'
-  #  ports:
-  #   - 5910:5900
-  #  links:
-  #    - selenium-hub:hub
+  firefox:
+    image: selenium/node-firefox-debug
+    container_name: 'firefox'
+    ports:
+      - 5901:5900
+    depends_on:
+      - selenium-hub
+    environment:
+      - TZ=Asia/Tokyo
+      - NODE_MAX_SESSION=1
+      - no_proxy=localhost
+      - HUB_ENV_no_proxy=localhost
+      - HUB_PORT_4444_TCP_ADDR=selenium-hub
+      - HUB_PORT_4444_TCP_PORT=4444
 
-  # source
-  python:
+  # -- test runner --
+  test:
     build: './'
     command: 'python ./startup.py'
-    container_name: 'python'
+    container_name: 'test'
     links:
       - selenium-hub:hub
     working_dir: '/root/script/'
