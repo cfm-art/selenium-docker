@@ -1,17 +1,10 @@
 # coding: utf-8
 
 from utils.ja.log import ログ
+from assertion.expect import assert_fail
 
 
 __unittest = True
-
-
-def assert_fail(error: str, message: str):
-    """ 失敗 """
-    if message is None or message == '':
-        raise AssertionError(error + '?\n')
-    else:
-        raise AssertionError(error + '?\n' + message + '\n')
 
 
 class 判定(object):
@@ -19,7 +12,10 @@ class 判定(object):
         return '指定値 = [' + str(self.__actual) + ']\n'
 
     def __init__(self, 値):
-        self.__actual = 値
+        if isinstance(値, str):
+            self.__actual = 値.strip()
+        else:
+            self.__actual = 値
 
     def 真値か(self, エラーメッセージ: str = ''):
         """" actual = true """
@@ -210,5 +206,5 @@ class 結果(object):
         assert_fail(エラーメッセージ)
 
     @staticmethod
-    def 判定(o) -> 判定:
-        return 判定(o)
+    def 判定(値) -> 判定:
+        return 判定(値)

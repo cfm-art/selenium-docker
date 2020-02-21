@@ -2,7 +2,7 @@
 
 import unittest
 
-from utils.ja.browser import BrowserJa
+from utils.ja.browser import ブラウザ
 from utils.browser import Browser
 from utils.log import Log
 from utils.ja.log import ログ
@@ -16,7 +16,7 @@ class test_0001_sample(unittest.TestCase):
         pass
 
     def test_001_サンプル(self):
-        browser = BrowserJa()
+        browser = ブラウザ()
         browser.ページ移動('https://www.google.com/')
         document = browser.document()
         Log.info(document.idで検索('gb').テキスト取得())

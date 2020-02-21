@@ -13,6 +13,7 @@ class test_0002_sample(unittest.TestCase):
         pass
 
     def test_003_サンプル(self):
+        Assert.expect(' test ').equals_to('test')
         Assert.expect(1).equals_to(1)
         Assert.expect(1).greater_than(0)
         Assert.expect(1).less_than(2)

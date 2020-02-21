@@ -8,7 +8,7 @@ __unittest = True
 
 def assert_fail(error: str, message: str):
     """ 失敗 """
-    if message is None or message == '':
+    if message is None or message.strip() == '':
         raise AssertionError(error + '?\n')
     else:
         raise AssertionError(error + '?\n' + message + '\n')
@@ -19,7 +19,10 @@ class Expect(object):
         return 'actual is [' + str(self.__actual) + ']\n'
 
     def __init__(self, actual):
-        self.__actual = actual
+        if isinstance(actual, str):
+            self.__actual = actual.strip()
+        else:
+            self.__actual = actual
 
     def is_true(self, message: str = ''):
         """" actual = true """

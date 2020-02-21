@@ -1,17 +1,17 @@
 # coding :utf-8
 
 from utils.browser import Browser
-from utils.ja.element import ElementJa
+from utils.ja.element import 要素
 
 
-class BrowserJa(object):
+class ブラウザ(object):
     __browser: Browser
 
     def __init__(self):
         self.__browser = Browser()
 
-    def document(self) -> ElementJa:
-        return ElementJa.document()
+    def document(self) -> 要素:
+        return 要素.document()
 
     def スクリーンショット(self, filename: str):
         self.__browser.screen_shot(filename)

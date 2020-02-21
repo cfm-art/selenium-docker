@@ -6,21 +6,21 @@ from utils.element import Element
 from selenium.webdriver.remote.webelement import WebElement
 
 
-class ElementJa(Element):
+class 要素(object):
 
     __element: Element
 
     def __init__(self, element: Union[Element, WebElement]):
         if isinstance(element, Element):
             self.__element = element
-        elif isinstance(element, ElementJa):
+        elif isinstance(element, 要素):
             self.__element = element.__element
         else:
             self.__element = Element(element)
 
     @staticmethod
-    def document() -> 'ElementJa':
-        return ElementJa(Element.document())
+    def document() -> '要素':
+        return 要素(Element.document())
 
     # -- 日本語 --
     def クリック(self):
@@ -75,17 +75,17 @@ class ElementJa(Element):
         return self.__element.is_checked()
 
     # -- find --
-    def idで検索(self, key: str) -> 'ElementJa':
-        return ElementJa(self.__element.find_by_id(key))
+    def idで検索(self, key: str) -> '要素':
+        return 要素(self.__element.find_by_id(key))
 
-    def タグで検索(self, key: str) -> 'ElementJa':
-        return ElementJa(self.__element.find_by_tag(key))
+    def タグで検索(self, key: str) -> '要素':
+        return 要素(self.__element.find_by_tag(key))
 
-    def クラスで検索(self, key: str) -> 'ElementJa':
-        return ElementJa(self.__element.find_by_class(key))
+    def クラスで検索(self, key: str) -> '要素':
+        return 要素(self.__element.find_by_class(key))
 
-    def nameで検索(self, key: str) -> 'ElementJa':
-        return ElementJa(self.__element.find_by_name(key))
+    def nameで検索(self, key: str) -> '要素':
+        return 要素(self.__element.find_by_name(key))
 
     # -- tag --
     def タグ名取得(self) -> str:
@@ -97,18 +97,18 @@ class ElementJa(Element):
     def 空(self) -> bool:
         return self.__element.is_empty()
 
-    def 最初(self) -> 'ElementJa':
-        return ElementJa(self.__element.first())
+    def 最初(self) -> '要素':
+        return 要素(self.__element.first())
 
-    def 要素取得(self, index: int) -> 'ElementJa':
-        return ElementJa(self.__element.at(index))
+    def 要素取得(self, index: int) -> '要素':
+        return 要素(self.__element.at(index))
 
-    def 一括処理(self, func: Callable[['ElementJa'], None]):
+    def 一括処理(self, func: Callable[['要素'], None]):
         for e in self.__element.list():
-            func(ElementJa(e))
+            func(要素(e))
 
-    def フィルタリング(self, func: Callable[['ElementJa'], bool]):
-        elements = map(lambda x: ElementJa(x), self.__element.list())
+    def フィルタリング(self, func: Callable[['要素'], bool]):
+        elements = map(lambda x: 要素(x), self.__element.list())
         filtered = filter(func, elements)
         return map(lambda x: x.first(), filtered)
 
@@ -125,19 +125,19 @@ class ElementJa(Element):
         """ """
         return len(self.__element.__elements)
 
-    def __contains__(self, value: 'ElementJa') -> bool:
+    def __contains__(self, value: '要素') -> bool:
         """ """
         return value.list()[0] in self.__element.__elements
 
-    def __getitem__(self, index: Union[int, slice]) -> 'ElementJa':
+    def __getitem__(self, index: Union[int, slice]) -> '要素':
         """ インデクサ """
-        return ElementJa(self.__elements[index])
+        return 要素(self.__elements[index])
 
-    def __iter__(self) -> Iterator['ElementJa']:
+    def __iter__(self) -> Iterator['要素']:
         """ for-in用イテレータ """
-        return iter(map(lambda x: ElementJa(x), self.__element.__elements))
+        return iter(map(lambda x: 要素(x), self.__element.__elements))
 
-    def __reversed__(self) -> Iterator['ElementJa']:
+    def __reversed__(self) -> Iterator['要素']:
         """ for-in用逆イテレータ """
         elements = self.__element.__elements
-        return iter(map(lambda x: ElementJa(x), reversed(elements)))
+        return iter(map(lambda x: 要素(x), reversed(elements)))
