@@ -37,7 +37,7 @@ class test_0001_sample(unittest.TestCase):
         Assert.expect(1).less_than(2)
         Assert.expect(1).greater_than_or_equals(0)
         Assert.expect(1).less_than_or_eauals(2)
-        Assert.expect(0.1 + 0.2).approximately_equals_to(0.3)
+        Assert.expect(0.1 + 0.2).float_equals_to(0.3)
         Assert.expect(False).is_false()
         Assert.expect(True).is_true()
         Assert.expect(0).is_falsy()
