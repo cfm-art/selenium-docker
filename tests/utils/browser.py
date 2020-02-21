@@ -10,10 +10,14 @@ from utils.global_holder import GlobalHolder
 
 
 class Browser(object):
+    """ ブラウザ制御系 """
+
     def document(self) -> Element:
+        """ ドキュメントルートの取得 """
         return Element.document()
 
     def screen_shot(self, filename: str):
+        """ スクリーンショット保存 """
         import traceback
         output = 'スクリーンショット'
         for tb in traceback.extract_stack(None, None):
@@ -46,9 +50,11 @@ class Browser(object):
         GlobalHolder.Browser.save_screenshot(image_path)
 
     def wait(self, seconds: float):
+        """　指定秒停止 """
         GlobalHolder.Browser.implicitly_wait(seconds)
 
     def navigate_to(self, path: str):
+        """ 指定URLへ移動 """
         wait = WebDriverWait(GlobalHolder.Browser, 1.0)
         path_lower = path.lower()
         GlobalHolder.Browser.get(path)
@@ -64,4 +70,5 @@ class Browser(object):
             self.url().lower() in path_lower
 
     def url(self) -> str:
+        """ 現在のURL """
         return GlobalHolder.Browser.current_url
