@@ -14,7 +14,7 @@ from utils.global_holder import GlobalHolder
 class Element(object):
     """ SeleniumのElementをラップ """
 
-    __elements: [WebElement]
+    __elements: List[WebElement]
 
     @staticmethod
     def document() -> 'Element':
@@ -26,16 +26,19 @@ class Element(object):
         element = self.__elements
         return element[0] if len(element) > 0 else None
 
+    def __e(self, element: object) -> List[WebElement]:
+        return element
+
     def __init__(self, element: Union[WebElement, List[WebElement]]):
         """ 要素を指定して初期化 """
         if isinstance(element, list):
-            self.__elements = element
+            self.__elements = self.__e(element)
         elif isinstance(element, Element):
-            self.__elements = element.__elements
+            self.__elements = self.__e(element.__elements)
         elif isinstance(element, WebElement):
-            self.__elements = [element]
+            self.__elements = self.__e([element])
         else:
-            self.__elements = element.__element
+            self.__elements = self.__e(element.__element)
 
     def click(self):
         """ クリック """
@@ -119,6 +122,16 @@ class Element(object):
         """ nameを指定して検索 """
         return Element(list(chain.from_iterable(
             map(lambda x: x.find_elements_by_name(key), self.__elements))))
+
+    def query_selector_all(self, query: str) -> 'Element':
+        """ querySelectorAll """
+        browser = GlobalHolder.Browser
+        js = 'return arguments[0].querySelectorAll(arguments[1])'
+
+        def exec(x):
+            return browser.execute_script(js, x, query)
+        return Element(list(chain.from_iterable(
+            map(exec, self.__elements))))
 
     # -- tag --
     def get_tag(self) -> str:

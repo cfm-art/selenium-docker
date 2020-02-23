@@ -11,7 +11,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from setup.log_stream import LogStream
 from setup.test_collector import TestCollector
-
+from spec.config import Config
 from utils.global_holder import GlobalHolder
 
 
@@ -29,6 +29,8 @@ def run():
         now.strftime('%Y%m%d_%H%M_%S'),
         now.strftime('%Y%m%d')))
 
+    config = Config()
+
     browser = None
     try:
         # HEADLESSブラウザに接続
@@ -45,6 +47,8 @@ def run():
         collector = TestCollector()
         Verbosity = 2
 
+        config.initialize()
+
         unittest.TextTestRunner(verbosity=Verbosity).run(collector.suite)
     except Exception as e:
         print(e)
@@ -53,6 +57,11 @@ def run():
         if browser is not None:
             browser.close()
             browser.quit()
+
+        try:
+            config.exit()
+        except Exception as e:
+            print(e)
 
         # ログ終了
         logfile.close()

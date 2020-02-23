@@ -27,11 +27,11 @@ class 要素(object):
         self.__element.click()
 
     # -- value --
-    def 値設定(self, value: str):
-        self.__element.set_value(value)
+    def 値設定(self, 値: str):
+        self.__element.set_value(値)
 
-    def ファイル設定(self, path: str):
-        self.__element.set_file(path)
+    def ファイル設定(self, ファイルパス: str):
+        self.__element.set_file(ファイルパス)
 
     def 値取得(self) -> str:
         return self.__element.get_value()
@@ -46,8 +46,8 @@ class 要素(object):
     def テキスト一括取得(self) -> str:
         return self.__element.get_texts()
 
-    def テキスト設定(self, text: str):
-        self.__element.set_text(text)
+    def テキスト設定(self, 値: str):
+        self.__element.set_text(値)
 
     def html取得(self) -> str:
         return self.__element.get_html()
@@ -58,11 +58,11 @@ class 要素(object):
     def html設定(self, html: str):
         self.__element.set_html(html)
 
-    def 属性値取得(self, name: str) -> str:
-        return self.__element.get_attribute(name)
+    def 属性値取得(self, 属性名: str) -> str:
+        return self.__element.get_attribute(属性名)
 
-    def 属性値一括取得(self, name: str) -> [str]:
-        return self.__element.get_attributes(name)
+    def 属性値一括取得(self, 属性名: str) -> [str]:
+        return self.__element.get_attributes(属性名)
 
     # -- radio / checkbox --
     def チェックつける(self):
@@ -75,17 +75,20 @@ class 要素(object):
         return self.__element.is_checked()
 
     # -- find --
-    def idで検索(self, key: str) -> '要素':
-        return 要素(self.__element.find_by_id(key))
+    def idで検索(self, id名: str) -> '要素':
+        return 要素(self.__element.find_by_id(id名))
 
-    def タグで検索(self, key: str) -> '要素':
-        return 要素(self.__element.find_by_tag(key))
+    def タグで検索(self, タグ名: str) -> '要素':
+        return 要素(self.__element.find_by_tag(タグ名))
 
-    def クラスで検索(self, key: str) -> '要素':
-        return 要素(self.__element.find_by_class(key))
+    def クラスで検索(self, クラス名: str) -> '要素':
+        return 要素(self.__element.find_by_class(クラス名))
 
-    def nameで検索(self, key: str) -> '要素':
-        return 要素(self.__element.find_by_name(key))
+    def nameで検索(self, 名前: str) -> '要素':
+        return 要素(self.__element.find_by_name(名前))
+
+    def セレクタで検索(self, セレクタクエリ: str) -> '要素':
+        return 要素(self.__element.query_selector_all(セレクタクエリ))
 
     # -- tag --
     def タグ名取得(self) -> str:
@@ -94,7 +97,7 @@ class 要素(object):
     def タグ名一括取得(self) -> [str]:
         return self.__element.get_tags()
 
-    def 空(self) -> bool:
+    def 空か(self) -> bool:
         return self.__element.is_empty()
 
     def 最初(self) -> '要素':
@@ -107,9 +110,9 @@ class 要素(object):
         for e in self.__element.list():
             func(要素(e))
 
-    def フィルタリング(self, func: Callable[['要素'], bool]):
+    def フィルタリング(self, フィルター: Callable[['要素'], bool]):
         elements = map(lambda x: 要素(x), self.__element.list())
-        filtered = filter(func, elements)
+        filtered = filter(フィルター, elements)
         return map(lambda x: x.first(), filtered)
 
     # -- list --

@@ -1,16 +1,19 @@
 # coding: utf-8
 
 import os
-import platform
 from pathlib import Path
+import re
 from selenium.webdriver.support.ui import WebDriverWait
 
 from utils.element import Element
+from utils.file_name import FileName
 from utils.global_holder import GlobalHolder
 
 
 class Browser(object):
     """ ブラウザ制御系 """
+
+    BASE_URL = ''
 
     def document(self) -> Element:
         """ ドキュメントルートの取得 """
@@ -31,19 +34,7 @@ class Browser(object):
         else:
             output = output + '_' + filename + '_' + no
 
-        now = GlobalHolder.LunchTime
-        if 'windows' in platform.system():
-            image_path = '.\\output\\captures\\{2}\\{0}\\{1}.png' \
-                .format(
-                    now.strftime('%Y%m%d_%H%M_%S'),
-                    output.replace('/', '\\'),
-                    now.strftime('%Y%m%d'))
-        else:
-            image_path = './output/captures/{2}/{0}/{1}.png' \
-                .format(
-                    now.strftime('%Y%m%d_%H%M_%S'),
-                    output.replace('/', '\\'),
-                    now.strftime('%Y%m%d'))
+        image_path = FileName.output(output + '.png')
 
         path = Path(image_path)
         os.makedirs(path.parent, exist_ok=True)
@@ -56,8 +47,12 @@ class Browser(object):
     def navigate_to(self, path: str):
         """ 指定URLへ移動 """
         wait = WebDriverWait(GlobalHolder.Browser, 1.0)
-        path_lower = path.lower()
-        GlobalHolder.Browser.get(path)
+        if re.match('^\\w+://', path):
+            target = path
+        else:
+            target = os.path.join(Browser.BASE_URL, path)
+        path_lower = target.lower()
+        GlobalHolder.Browser.get(target)
         try:
             wait.until(lambda x: self._is_url(path_lower))
         except Exception as e:
@@ -72,3 +67,7 @@ class Browser(object):
     def url(self) -> str:
         """ 現在のURL """
         return GlobalHolder.Browser.current_url
+
+    def set_baseurl(self, url: str):
+        """ navigate_toの基本URL """
+        Browser.BASE_URL = url

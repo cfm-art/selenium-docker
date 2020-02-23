@@ -24,3 +24,6 @@ class ブラウザ(object):
 
     def url取得(self) -> str:
         return self.__browser.url()
+
+    def ベース設定(self, url: str):
+        self.__browser.set_baseurl(url)

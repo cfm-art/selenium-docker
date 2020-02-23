@@ -19,12 +19,12 @@ class test_0001_sample(unittest.TestCase):
         browser = ブラウザ()
         browser.ページ移動('https://www.google.com/')
         document = browser.document()
-        Log.info(document.idで検索('gb').テキスト取得())
+        ログ.情報(document.idで検索('gb').テキスト取得())
         browser.スクリーンショット('sample')
 
     def test_002_サンプル(self):
         browser = Browser()
         browser.navigate_to('https://www.google.com/')
         document = browser.document()
-        ログ.情報(document.find_by_id('gb').get_text())
+        Log.info(document.query_selector_all('#gb').get_text())
         browser.screen_shot('sample')
