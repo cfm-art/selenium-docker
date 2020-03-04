@@ -125,13 +125,16 @@ class Element(object):
 
     def query_selector_all(self, query: str) -> 'Element':
         """ querySelectorAll """
-        browser = GlobalHolder.Browser
-        js = 'return arguments[0].querySelectorAll(arguments[1])'
-
-        def exec(x):
-            return browser.execute_script(js, x, query)
+        e = self.__elements
         return Element(list(chain.from_iterable(
-            map(exec, self.__elements))))
+            map(lambda x: x.find_elements_by_css_selector(query), e))))
+        # browser = GlobalHolder.Browser
+        # js = 'return arguments[0].querySelectorAll(arguments[1])'
+
+        # def exec(x):
+        #     return browser.execute_script(js, x, query)
+        # return Element(list(chain.from_iterable(
+        #     map(exec, self.__elements))))
 
     # -- tag --
     def get_tag(self) -> str:

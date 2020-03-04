@@ -16,14 +16,11 @@ class ブラウザ(object):
     def スクリーンショット(self, filename: str):
         self.__browser.screen_shot(filename)
 
-    def 一時停止(self, seconds: float):
-        self.__browser.wait(seconds)
-
     def ページ移動(self, path: str):
         self.__browser.navigate_to(path)
 
     def url取得(self) -> str:
         return self.__browser.url()
 
-    def ベース設定(self, url: str):
+    def ベースURL設定(self, url: str):
         self.__browser.set_baseurl(url)

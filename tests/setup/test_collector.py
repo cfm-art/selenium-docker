@@ -50,6 +50,8 @@ class TestCollector:
                 except Exception as e:
                     print('記述エラー:' + str(e))
                     print(inner_tests)
+                    if hasattr(inner_tests, '_exception'):
+                        print(inner_tests._exception)
                     pass
 
         # 指定された順番で登録

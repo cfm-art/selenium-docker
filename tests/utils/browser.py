@@ -2,18 +2,16 @@
 
 import os
 from pathlib import Path
-import re
-from selenium.webdriver.support.ui import WebDriverWait
 
 from utils.element import Element
 from utils.file_name import FileName
 from utils.global_holder import GlobalHolder
+from utils.url import URL
+from utils.waiter import Waiter
 
 
 class Browser(object):
     """ ブラウザ制御系 """
-
-    BASE_URL = ''
 
     def document(self) -> Element:
         """ ドキュメントルートの取得 """
@@ -40,34 +38,17 @@ class Browser(object):
         os.makedirs(path.parent, exist_ok=True)
         GlobalHolder.Browser.save_screenshot(image_path)
 
-    def wait(self, seconds: float):
-        """　指定秒停止 """
-        GlobalHolder.Browser.implicitly_wait(seconds)
-
-    def navigate_to(self, path: str):
+    def navigate_to(self, path: str, wait_seconds: float = 1.0):
         """ 指定URLへ移動 """
-        wait = WebDriverWait(GlobalHolder.Browser, 1.0)
-        if re.match('^\\w+://', path):
-            target = path
-        else:
-            target = os.path.join(Browser.BASE_URL, path)
-        path_lower = target.lower()
+        target = URL().get_absolute_path(path)
         GlobalHolder.Browser.get(target)
-        try:
-            wait.until(lambda x: self._is_url(path_lower))
-        except Exception as e:
-            print(str(e))
-            print('current url:' + self.url())
-            raise
-
-    def _is_url(self, path_lower: str) -> bool:
-        return path_lower in self.url().lower() or \
-            self.url().lower() in path_lower
+        if wait_seconds > 0:
+            Waiter().wait_page(path, wait_seconds, True)
 
     def url(self) -> str:
         """ 現在のURL """
-        return GlobalHolder.Browser.current_url
+        return URL().current_url()
 
     def set_baseurl(self, url: str):
         """ navigate_toの基本URL """
-        Browser.BASE_URL = url
+        URL().set_baseurl(url)
