@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import csv
+from utils.fill_script import ScriptForFiller
 from utils.browser import Browser
 from utils.file_name import FileName
 
@@ -20,7 +21,11 @@ class Matcher(object):
             reader = csv.reader(csvfile)
 
             for row in reader:
-                if row[0].startswith('#'):
+                if row[0].startswith('//'):
+                    next
+                s = ScriptForFiller(row[1])
+                if s.is_script():
+                    s.run()
                     next
                 query = row[1]
                 value = row[2]
