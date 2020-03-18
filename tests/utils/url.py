@@ -14,12 +14,17 @@ class URL(object):
             target = path
         else:
             # related path
+            if path.startswith('/'):
+                path = '.' + path
             target = os.path.join(URL.BASE_URL, path)
         return target
 
-    def current_url(self) -> str:
+    def current_url(self, is_full: bool = False) -> str:
         """ 現在のURL """
-        return GlobalHolder.Browser.current_url
+        if is_full:
+            return GlobalHolder.Browser.current_url
+        else:
+            return GlobalHolder.Browser.current_url.replace(URL.BASE_URL, '')
 
     def set_baseurl(self, url: str):
         """ navigate_toの基本URL """

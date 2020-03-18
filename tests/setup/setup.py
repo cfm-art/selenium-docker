@@ -4,6 +4,7 @@ import locale
 import os
 import platform
 import sys
+import traceback
 import unittest
 
 from selenium import webdriver
@@ -15,7 +16,7 @@ from spec.config import Config
 from utils.global_holder import GlobalHolder
 
 
-def run():
+def run(selenium_host: str):
     sys.path.insert(0, os.getcwd())
     locale.setlocale(locale.LC_ALL, '')
 
@@ -35,7 +36,7 @@ def run():
     try:
         # HEADLESSブラウザに接続
         browser = webdriver.Remote(
-            command_executor='http://selenium-hub:4444/wd/hub',
+            command_executor='http://' + selenium_host + '/wd/hub',
             desired_capabilities=DesiredCapabilities.CHROME)
 
         GlobalHolder.Browser = browser
@@ -52,6 +53,7 @@ def run():
         unittest.TextTestRunner(verbosity=Verbosity).run(collector.suite)
     except Exception as e:
         print(e)
+        traceback.print_exc()
     finally:
         # 終了
         if browser is not None:
@@ -62,6 +64,7 @@ def run():
             config.exit()
         except Exception as e:
             print(e)
+            traceback.print_exc()
 
         # ログ終了
         logfile.close()

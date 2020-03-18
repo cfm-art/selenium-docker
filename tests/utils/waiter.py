@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from utils.global_holder import GlobalHolder
 from utils.url import URL
+from utils.reraise import reraise
 
 
 class Waiter(object):
@@ -26,9 +27,13 @@ class Waiter(object):
         path_lower = target.lower()
         try:
             wait.until(lambda x: self._is_url(path_lower))
-        except Exception:
+        except Exception as e:
             if throws:
-                raise
+                reraise(
+                    e,
+                    'timeout wait page',
+                    'Expect:' + path,
+                    'Actual:' + URL().current_url())
 
     def wait_element(
             self,
@@ -45,9 +50,12 @@ class Waiter(object):
                 wait.until(cond)
             else:
                 wait.until_not(cond)
-        except Exception:
+        except Exception as e:
             if throws:
-                raise
+                reraise(
+                    e,
+                    'time out wait element'
+                    'Target:' + selector)
 
     def wait_element_clickable(
             self,
@@ -64,9 +72,12 @@ class Waiter(object):
                 wait.until(cond)
             else:
                 wait.until_not(cond)
-        except Exception:
+        except Exception as e:
             if throws:
-                raise
+                reraise(
+                    e,
+                    'time out wait element clickable'
+                    'Target:' + selector)
 
     def wait_title_contains(
             self,
@@ -78,16 +89,26 @@ class Waiter(object):
         try:
             cond = expected_conditions.title_contains(title)
             wait.until(cond)
-        except Exception:
+        except Exception as e:
             if throws:
-                raise
+                reraise(
+                    e,
+                    'time out wait title'
+                    'Except:' + title,
+                    'Actual:' + GlobalHolder.Browser.title)
 
     def wait_loaded(
             self,
             wait_seconds: float = 1.0,
             throws: bool = True):
         wait = WebDriverWait(GlobalHolder.Browser, wait_seconds)
-        wait.until(expected_conditions.presence_of_all_elements_located)
+        try:
+            wait.until(expected_conditions.presence_of_all_elements_located)
+        except Exception as e:
+            if throws:
+                reraise(
+                    e,
+                    'time out wait loaded')
 
     def _is_url(self, path_lower: str) -> bool:
         url = URL().current_url().lower()

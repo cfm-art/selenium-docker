@@ -58,7 +58,7 @@ class ElementAccessor(object):
             element.click()
             ElementAccessor.__set_input_value(element, value)
         elif tag_name == 'select':
-            element.select_by_value(value)
+            ElementAccessor.__set_value(element, value)
         else:
             ElementAccessor.__set_value(element, value)
 
